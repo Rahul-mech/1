@@ -1,0 +1,12 @@
+/* Custom styles to complement Tailwind */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+input:focus {
+  outline: none;
+}
+
+a {
+  transition: color 0.3s ease;
+}
