@@ -13,15 +13,15 @@
     <!-- Profile Section -->
     <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 class="text-xl text-white mb-4">Profile</h3>
-      <p><strong>Phone:</strong> <span id="userPhone">1234567890</span></p>
-      <p><strong>City:</strong> <span id="userCity">Mumbai</span></p>
-      <p><strong>State:</strong> <span id="userState">Maharashtra</span></p>
-      <p><strong>Country:</strong> <span id="userCountry">India</span></p>
+      <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+      <p><strong>City:</strong> <span id="userCity"></span></p>
+      <p><strong>State:</strong> <span id="userState"></span></p>
+      <p><strong>Country:</strong> <span id="userCountry"></span></p>
     </div>
     <!-- Wallet Section -->
     <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 class="text-xl text-white mb-4">Wallet</h3>
-      <p class="text-2xl text-green-400">Balance: ₹<span id="walletBalance">1000</span></p>
+      <p class="text-2xl text-green-400">Balance: ₹<span id="walletBalance"></span></p>
       <button
         onclick="window.location.href='add-balance.html'"
         class="mt-4 p-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
@@ -49,16 +49,26 @@
   </div>
   <script src="scripts.js"></script>
   <script>
-    // Mock data - replace with API call
-    document.addEventListener('DOMContentLoaded', () => {
-      // Example: Fetch user data from API
-      // fetch('/api/user').then(res => res.json()).then(data => {
-      //   document.getElementById('userPhone').textContent = data.phone;
-      //   document.getElementById('userCity').textContent = data.city;
-      //   document.getElementById('userState').textContent = data.state;
-      //   document.getElementById('userCountry').textContent = data.country;
-      //   document.getElementById('walletBalance').textContent = data.balance;
-      // });
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/user', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('userPhone').textContent = data.phoneNumber;
+          document.getElementById('userCity').textContent = data.city;
+          document.getElementById('userState').textContent = data.state;
+          document.getElementById('userCountry').textContent = data.country;
+          document.getElementById('walletBalance').textContent = data.walletBalance;
+        } else {
+          window.location.href = 'index.html'; // Redirect to login if token invalid
+        }
+      } catch (error) {
+        window.location.href = 'index.html';
+      }
     });
   </script>
 </body>
